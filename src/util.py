@@ -14,7 +14,7 @@ def clear():
 
 def title(title):
     if os.name == "nt":
-        os.system(f"title {title}") # Windows only
+        os.system(f"title {title}")  # Windows only
 
 def wait(to_exit=False):
     input(f"Press Enter to {'exit' if to_exit else 'continue'}.\n")

@@ -11,7 +11,11 @@ class Check:
         self.paths = [
             "main.py",
             "util.py",
+            "engine.py",
             "config.toml",
+            "get_config.py",
+            "menu.py",
+            "packs_viewer.py",
             "packs"
         ]
         self.current_location = os.getcwd()

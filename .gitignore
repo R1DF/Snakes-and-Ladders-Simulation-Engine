@@ -1,3 +1,7 @@
+# PyCharm's files that are necessary to include
 /.idea/*
 *.iml
 *.xml
+
+# I don't want you to see this.
+/src/packs/test.json

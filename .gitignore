@@ -1,4 +1,4 @@
-# PyCharm's files that are necessary to include
+# PyCharm's files that are unnecessary to include
 /.idea/*
 *.iml
 *.xml

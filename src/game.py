@@ -1,6 +1,7 @@
 # Imports
 import os
 import json
+from field import Field
 
 # Game class
 class SnakesAndLadders:
@@ -19,15 +20,12 @@ class SnakesAndLadders:
 
         # Loading grid
         self.grid_width, self.grid_height = self.pack_data["grid"]
-        self.grid = [["NONE" for x in range(self.grid_width)] for y in range(self.grid_height)]
-        print(self.grid)
+        self.field = Field(self, self.pack_data)
 
         # Getting snakes and ladders
-        self.snakes, self.ladders = self.pack_data["locations"]["snakes"], self.pack_data["locations"]["ladders"]
-        self.snakes_locations, self.ladders_locations = [x["coords"][0] for x in self.snakes], [x["coords"][0] for x in self.ladders]
-
-
+        # self.snakes, self.ladders = self.pack_data["locations"]["snakes"], self.pack_data["locations"]["ladders"]
+        # self.snakes_locations, self.ladders_locations = [x["coords"][0] for x in self.snakes], [x["coords"][0] for x in self.ladders]
 
 
 if __name__ == "__main__":
-    SnakesAndLadders("interwar_europe.json")
+    SnakesAndLadders("test.json")

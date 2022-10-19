@@ -5,4 +5,5 @@ from sender import Sender
 class Ladder(Sender):
     def __init__(self, master, data):
         Sender.__init__(self, master, "LADDER", data)
+        self.display_name = "###"
 

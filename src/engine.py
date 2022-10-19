@@ -1,6 +1,9 @@
 # Imports
 import questionary
-from util import clear, break_line, wait
+import json
+import os
+from game import SnakesAndLadders
+from util import clear, break_line, wait, pursue_str_input
 from get_config import Config
 from packs_viewer import PacksViewer
 from packs_detector import get_zipped
@@ -13,6 +16,7 @@ class Engine:
             "Play",
             "View packs",
             "Credits",
+            "Check for updates (internet required)",
             "Quit"
         )
         self.selection = -1
@@ -40,14 +44,29 @@ class Engine:
             match self.selection:
                 case 0:
                     break_line()
+                    file_names = [x["file_name"] for x in get_zipped()]
                     packs = [x["name"] for x in get_zipped()]
                     selected_pack = questionary.select(
                         "Please select a pack (Ctrl+C to cancel):",
                         choices=packs
                     ).ask(kbi_msg="")
+                    selected_pack_file_name = file_names[packs.index(selected_pack)]
                     if selected_pack is not None:
-                        pass
-
+                        print("Fetching player limit...")
+                        player_limit = json.load(open(os.getcwd() + "\\packs\\" + selected_pack_file_name))["player_limit"]
+                        player_names = []
+                        # Logic error possibility: if 2 packs are equally named
+                        print(f"This pack allows a maximum of {player_limit} players.\n")
+                        for player in range(player_limit):
+                            while True:
+                                player_name = pursue_str_input(f"Enter name for player {player + 1}", 3, 10)
+                                if player_name.lower() in [x.lower() for x in player_names]:
+                                    print("Enter another player name.\n")
+                                    continue
+                                player_names.append(player_name)
+                                break
+                        self.game = SnakesAndLadders(selected_pack_file_name, player_names)
+                        wait()
                 case 1:
                     PacksViewer(self)
 
@@ -59,5 +78,8 @@ class Engine:
                     wait()
 
                 case 3:
+                    pass
+
+                case 4:
                     clear()
                     quit()

@@ -13,6 +13,7 @@ def detect():
 
 def get_zipped():
     return [{
+        "file_name": x[0],
         "name": x[1],
         "author": x[2],
         "description": x[3]

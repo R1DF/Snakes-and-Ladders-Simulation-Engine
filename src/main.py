@@ -5,7 +5,7 @@ try:
     from engine import Engine
 
 except ImportError:
-    print("Error importing game files.\nPlease reinstall the game.\n")
+    alert("Error importing game files.\nPlease reinstall the game.\n")
     quit()
 
 # CONSTANTS
@@ -18,9 +18,9 @@ title("Loading...")
 # If passed, continue checking
 if (missing_file := Check().check_file_integrity()) is not None:
     if missing_file != "packs":
-        print(f"\nThe file {missing_file} is missing.\nPlease reinstall the game.\n\n")
+        alert(f"\nThe file {missing_file} is missing.\nPlease reinstall the game.\n\n")
     else:
-        print("\nThe \"packs\" folder inside the game path was not found.\nPlease make it or reinstall the game.\n\n")
+        alert("\nThe \"packs\" folder inside the game path was not found.\nPlease make it or reinstall the game.\n\n")
     wait(True)
     quit()
 

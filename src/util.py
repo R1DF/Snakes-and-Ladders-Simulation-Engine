@@ -1,20 +1,70 @@
 # Imports
-from colorama import Fore, Style
+from colorama import init, Fore, Style
 import os
 
+# Colorama must do its thing
+init()
+
 # Functions
-def print_coloured(message):
-    pass
+def get_coloured_message(message):
+    return message.replace(
+        "~|", Style.RESET_ALL
+    ).replace(
+        "B#", Fore.BLUE
+    ).replace(
+        "R#", Fore.RED
+    ).replace(
+        "Y#", Fore.YELLOW
+    ).replace(
+        "G#", Fore.GREEN
+    ).replace(
+        "C#", Fore.CYAN
+    ).replace(
+        "M#", Fore.MAGENTA
+    )
+
+
+def alert(message):
+    print(Fore.RED + message + Style.RESET_ALL)
+
+
+def inform(message):
+    print(Fore.BLUE + message + Style.RESET_ALL)
+
+
+def notify(message):
+    print(Fore.YELLOW + message + Style.RESET_ALL)
+
+
+def cheer(message):
+    print(Fore.GREEN + message + Style.RESET_ALL)
+
 
 def break_line(amount=1):
     print("\n" * amount)
 
+
 def clear():
     os.system("cls" if os.name == "nt" else "clear")
 
-def title(title):
+
+def title(program_title):
     if os.name == "nt":
-        os.system(f"title {title}")  # Windows only
+        os.system(f"title {program_title}")  # Windows only
+
 
 def wait(to_exit=False):
     input(f"Press Enter to {'exit' if to_exit else 'continue'}.\n")
+
+
+def pursue_str_input(message="", min_range=None, max_range=None):
+    while True:
+        user_input = input(f"{message}: ").strip()
+        if min_range is not None:
+            if len(user_input) < min_range:
+                print(f"Please use at least {min_range} characters.\n")
+                continue
+            elif len(user_input) > max_range:
+                print(f"Please use no more than {max_range} characters.\n")
+                continue
+        return user_input

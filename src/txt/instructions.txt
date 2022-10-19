@@ -1,0 +1,6 @@
+List of commands:
+B#ROLL~| - Will roll the die and move you an according amount of units.
+B#PLAYERS~| - Will show you the map and highlight where every player is.
+B#LOCATIONS~| - Will show you the map and highlight where every ladder, snake, and redemption point is.
+B#STATUS#| - Will show you how far you are from the end point.
+B#SURRENDER~| - If you've lost all hope in victory, might as well admit it.

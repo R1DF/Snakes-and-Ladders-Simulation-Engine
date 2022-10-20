@@ -1,2 +1,5 @@
+[program]
+CHECK_FILE_INTEGRITY = true
+
 [constants]
 RATE = 0.05

@@ -1,6 +1,7 @@
 # Imports
 import os
 from time import sleep
+from util import cheer, alert
 
 # Constants
 RATE = 0.05
@@ -27,7 +28,7 @@ class Check:
             print(f"{path}... ", end="")
             sleep(RATE)
             if os.path.exists(os.getcwd() + "\\" + path):
-                print("Success")
+                cheer("Success")
             else:
-                print("Error!")
+                alert("Error!")
                 return path

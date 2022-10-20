@@ -2,8 +2,29 @@
 import os
 import json
 import random
+import util
 from field import Field
 from player import Player
+from parser import Parser
+
+# Constants
+VALID_COMMANDS = (
+    "HELP",
+    "ROLL",
+    "PLAYERS",
+    "LOCATIONS",
+    "STATUS",
+    "SURRENDER"
+)
+
+VERY_NAUGHTY_WORDS = (
+    "FUCK",
+    "SHIT",
+    "BITCH",
+    "PUSSY",
+    "COCK",
+    "SEX"
+)
 
 # Game class
 class SnakesAndLadders:
@@ -11,6 +32,7 @@ class SnakesAndLadders:
         # Initialization and loading
         self.pack_file_name = pack_file_name
         self.pack_data = json.load(open(os.getcwd() + "\\packs\\" + self.pack_file_name, "r"))
+        self.has_anyone_won = False
         self.players = []
         """
         Grid information:
@@ -30,9 +52,46 @@ class SnakesAndLadders:
         for player_name in player_names_shuffled:
             self.players.append(Player(self, player_name))
 
-        # Getting snakes and ladders
-        self.snakes, self.ladders = self.pack_data["locations"]["snakes"], self.pack_data["locations"]["ladders"]
-        self.snakes_locations, self.ladders_locations = [x["coords"][0] for x in self.snakes], [x["coords"][0] for x in self.ladders]
+        # Game loop
+        self.parser = Parser(self)
+        self.initiate_loop()
+
+    def initiate_loop(self):
+        counter = 0
+        while not self.has_anyone_won:
+            counter += 1
+            for player in self.players:
+                util.clear()
+                player_name = player.name
+                has_valid_command = False
+
+                print(util.get_coloured_message(
+                    f"M#Turn {counter}~|\nM#Current player: {player_name}~|\nEnter B#HELP~| for a list of commands.")
+                )
+
+                while not has_valid_command:
+                    command = util.pursue_str_input(util.get_coloured_message("Enter command"))
+                    if command == "":
+                        util.alert("ERROR: No command given.")
+                        util.break_line()
+                        continue
+
+                    elif any(x in VERY_NAUGHTY_WORDS for x in command.upper().strip().split()):
+                        util.alert("ERROR: Watch your mouth.")
+                        util.break_line()
+                        continue
+
+                    elif command.upper() not in VALID_COMMANDS:
+                        util.alert("ERROR: Invalid command.")
+                        util.break_line()
+                        continue
+
+                    else:
+                        util.break_line()
+                        self.parser.parse(command.upper(), player)
+                        has_valid_command = True
+
+                util.wait()
 
 
 if __name__ == "__main__":

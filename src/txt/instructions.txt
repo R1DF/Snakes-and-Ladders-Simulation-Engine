@@ -1,5 +1,6 @@
 List of commands:
 B#HELP~| - Will give you this list of instructions.
+B#CLEAR~| - WIll clear the whole command line for you.
 B#ROLL~| - Will roll the die and move you an according amount of units.
 B#PLAYERS~| - Will show you the map and highlight where every player is.
 B#LOCATIONS~| - Will show you the map and highlight where every ladder, snake, and redemption point is.

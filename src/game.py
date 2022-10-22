@@ -10,6 +10,7 @@ from parser import Parser
 # Constants
 VALID_COMMANDS = (
     "HELP",
+    "CLEAR",
     "ROLL",
     "PLAYERS",
     "LOCATIONS",
@@ -88,8 +89,7 @@ class SnakesAndLadders:
 
                     else:
                         util.break_line()
-                        self.parser.parse(command.upper(), player)
-                        has_valid_command = True
+                        has_valid_command = self.parser.parse(command.upper(), player)
 
                 util.wait()
 

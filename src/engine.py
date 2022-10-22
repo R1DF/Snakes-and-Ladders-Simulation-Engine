@@ -3,7 +3,7 @@ import questionary
 import json
 import os
 from game import SnakesAndLadders
-from util import clear, break_line, wait, pursue_str_input
+from util import clear, break_line, wait, pursue_str_input, pursue_int_input
 from get_config import Config
 from packs_viewer import PacksViewer
 from packs_detector import get_zipped
@@ -57,7 +57,7 @@ class Engine:
                         player_names = []
                         # Logic error possibility: if 2 packs are equally named
                         print(f"This pack allows a maximum of {player_limit} players.\n")
-                        for player in range(player_limit):
+                        for player in range(pursue_int_input(f"Enter amount of players (2-{player_limit})", 2, player_limit)):
                             while True:
                                 player_name = pursue_str_input(f"Enter name for player {player + 1}", 3, 10)
                                 if player_name.lower() in [x.lower() for x in player_names]:

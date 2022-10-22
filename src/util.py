@@ -68,3 +68,20 @@ def pursue_str_input(message="", min_range=None, max_range=None):
                 print(f"Please use no more than {max_range} characters.\n")
                 continue
         return user_input
+
+
+def pursue_int_input(message="", min_range=None, max_range=None):
+    while True:
+        user_input = input(f"{message}: ").strip()
+        if not user_input.isnumeric():
+            print("Please enter a number.\n")
+            continue
+        user_input = int(user_input)
+        if min_range is not None:
+            if user_input < min_range:
+                print(f"{min_range} is the lowest you can go.\n")
+                continue
+            elif user_input > max_range:
+                print(f"Please enter a number not any higher than {max_range}.\n")
+                continue
+        return user_input

@@ -31,7 +31,7 @@ class Parser:
             case "STATUS":
                 player_position = int(self.master.field.grid[player.coordinates[1]][player.coordinates[0]].location_string)
                 distance = (self.master.pack_data["grid_height"] * 10) - player_position
-                print(f"You are {distance} unit{'s' if distance > 1 else ''} away from the finishing point.")
+                print(f"You are {distance} unit{'s' if distance > 1 else ''} away from the finishing point.\nPosition: {player.get_position()}")
 
             case "SURRENDER":
                 if questionary.confirm(

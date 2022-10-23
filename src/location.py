@@ -40,7 +40,7 @@ class Location:
         if self.contents is not None:
             return self.contents.display_name
         elif self.has_redemption_point:
-            return "RMP"
+            return "X" * self.master.master.string_representative_width
         else:
             return self.location_string
 

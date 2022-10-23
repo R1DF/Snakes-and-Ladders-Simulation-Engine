@@ -38,7 +38,7 @@ class Field:
             row = self.grid[y][::] if y % 2 == 0 else self.grid[y][::-1]
             printed_grid.append([x.get_display_name() for x in row])
 
-        # Printing out the formatted points
+        # Printing out the formatted points and printing out the lists in reverse
         for row in printed_grid[::-1]:
             print(" | ".join(row))
 

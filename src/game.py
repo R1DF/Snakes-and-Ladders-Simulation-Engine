@@ -29,7 +29,7 @@ VERY_NAUGHTY_WORDS = (
 
 # Game class
 class SnakesAndLadders:
-    def __init__(self, pack_file_name, player_names):
+    def __init__(self, pack_file_name, player_names, debug=False):
         # Initialization and loading
         self.pack_file_name = pack_file_name
         self.pack_data = json.load(open(os.getcwd() + "\\packs\\" + self.pack_file_name, "r"))
@@ -45,6 +45,7 @@ class SnakesAndLadders:
 
         # Loading grid
         self.grid_width, self.grid_height = 10, self.pack_data["grid_height"]
+        self.string_representative_width = len(str(self.grid_width * self.grid_height))
         self.field = Field(self, self.pack_data)
 
         # Creating players
@@ -53,9 +54,11 @@ class SnakesAndLadders:
         for player_name in player_names_shuffled:
             self.players.append(Player(self, player_name))
 
-        # Game loop
+        # Parser + Game loop
         self.parser = Parser(self)
-        self.initiate_loop()
+
+        if not debug:
+            self.initiate_loop()
 
     def initiate_loop(self):
         counter = 0
@@ -93,7 +96,11 @@ class SnakesAndLadders:
 
                 util.wait()
 
+    def simulate_question(self, player, which_type):
+        match which_type:
+            case "REDEMPTION":
+                question = self.pack_data["redemption_point_questions"]
 
 if __name__ == "__main__":
-    SnakesAndLadders("test2.json", ["Albert", "Adam", "Adrian"]).field.show_points()
-
+    a = SnakesAndLadders("test2.json", ["Albert", "Adam"], True)
+    a = a.field.grid

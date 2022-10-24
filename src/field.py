@@ -28,7 +28,7 @@ class Field:
         for y in range(len(self.grid)):
             for x in range(len(self.grid[y])):
                 if [x, y] in self.ladders_coords:
-                    ladder_data = self.snakes[self.ladders_coords.index([x, y])]
+                    ladder_data = self.ladders[self.ladders_coords.index([x, y])]
                     self.grid[y][x].set_contents("LADDER", ladder_data)
 
     def show_points(self):
@@ -41,6 +41,3 @@ class Field:
         # Printing out the formatted points and printing out the lists in reverse
         for row in printed_grid[::-1]:
             print(" | ".join(row))
-
-    def show_players(self):
-        pass

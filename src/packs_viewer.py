@@ -3,7 +3,7 @@ import os
 import json
 from menu import BaseMenu
 from time import sleep
-from util import wait
+from util import wait, title
 from packs_detector import get_zipped
 
 # Packs viewer class
@@ -12,6 +12,7 @@ class PacksViewer(BaseMenu):
         BaseMenu.__init__(self, master)
 
     def load(self):
+        title(f"Snakes and Ladders Engine v{self.master.version} - Pack Viewer")
         print("Loading packs...")
         sleep(self.master.config_loader.constants["RATE"])
 
@@ -21,7 +22,7 @@ class PacksViewer(BaseMenu):
             print("You don't have any pack installed.\n")
             wait(True)
         else:
-            print(f"\n{len(packs_zipped)} {'pack was' if len(packs_zipped) == 1 else 'packs_were'} detected.")
+            print(f"\n{len(packs_zipped)} {'pack was' if len(packs_zipped) == 1 else 'packs were'} detected.")
             for file_index in range(len(packs_zipped)):
                 pack_metadata = packs_zipped[file_index]
                 pack_name = pack_metadata["name"]

@@ -32,7 +32,6 @@ except KeyboardInterrupt:
 # Running
 if __name__ == "__main__":
     try:
-        title(f"Snakes and Ladders Simuation Engine {VERSION}")
         app = Engine(VERSION)
         clear()
     except KeyboardInterrupt:

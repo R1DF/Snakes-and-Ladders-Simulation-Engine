@@ -1,5 +1,6 @@
 # Imports
 import util
+import questionary
 
 # Player class
 class Player:
@@ -7,11 +8,43 @@ class Player:
         # Initialization
         self.master = master
         self.name = name
+        self.display_name = name[:self.master.string_representative_width].upper()
         self.coordinates = [0, 0]
         self.redemption_points = 0
 
+    def set_colour(self, colour):
+        match colour:
+            case "RED":
+                self.display_name = f"R#{self.name}~|"
+            case "BLUE":
+                self.display_name = f"B#{self.name}~|"
+            case "YELLOW":
+                self.display_name = f"Y#{self.name}~|"
+            case "CYAN":
+                self.display_name = f"C#{self.name}~|"
+            case "MAGENTA":
+                self.display_name = f"M#{self.name}~|"
+            case "WHITE":
+                self.display_name = f"W#{self.name}~|"
+            case "GREEN":
+                self.display_name = f"G#{self.name}~|"
+            case None:
+                self.display_name = self.name  # Reset
+
     def on_inverse_row(self):
         return self.master.must_inverse(self.coordinates[1])
+
+    def use_redemption_point(self):
+        prompt = None
+        while prompt is None:
+            try:
+                prompt = questionary.select(
+                    "Use 1 Redemption Point?",
+                    choices=["Yes", "No"]
+                ).unsafe_ask()
+                return prompt == "Yes"
+            except KeyboardInterrupt:
+                continue
 
     def move(self, units):
         # Getting values and shortening
@@ -45,19 +78,27 @@ class Player:
         # Checking for location type
         match location.location_type:
             case "LADDER":
-                pass
+                if self.master.simulate_question(self, "LADDER"):
+                    location.contents.send(self)
             case "SNAKE":
-                pass
+                destination = location.contents.destination
+                destination = self.master.field.grid[destination[1]][destination[0]].location_number
+                print("\nUh oh... You reached a snake!")
+                if self.redemption_points == 0:
+                    location.contents.send(self)
+                    print(f"You don't have any Redemption Points. You slid down all the way to square {destination}...")
+                else:
+                    if self.use_redemption_point():
+                        self.redemption_points -= 1
+                        print("You used 1 Redemption Point. You're safe!")
+                    else:
+                        location.contents.send(self)
+                        print(f"You willingly chose to slide down to square {destination}.")
             case _:
                 # Checking for a redemption point
                 if location.has_redemption_point:
                     if self.redemption_points < 3:
-                        if self.master.simulate_question(self, "REDEMPTION"):
-                            print(util.get_coloured_message(f"G#Correct!~|\nC#{self.name}~| received a M~Redemption Point~|!"))
-                            self.redemption_points += 1
-                            location.has_redemption_point = False
-                        else:
-                            print(util.get_coloured_message(f"R#Incorrect!~|\nC#{self.name}~| tried to receive a M#Redemption Point~|, but failed..."))
+                        self.master.simulate_question(self, "REDEMPTION")
                     else:
                         print(util.get_coloured_message(f"C#{self.name}~| tried to get a Redemption Point, but was already carrying too many."))
 

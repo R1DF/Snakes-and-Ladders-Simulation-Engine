@@ -9,8 +9,8 @@ class Sender:
         self.destination = self.data["coords"][1]
         self.questions = self.data["questions"]
 
-    def send(self):
-        pass
+    def send(self, player):
+        player.coordinates = self.destination.copy()
 
     def set_colour(self, colour):
         match colour:

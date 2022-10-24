@@ -7,8 +7,7 @@ class Sender:
         self.display_name = None
 
         self.transports_to = self.data["coords"][1]
-        self.question = self.data["question"]
-        self.answers = self.data["answers"]
+        self.questions = self.data["questions"]
 
 
     def send(self):

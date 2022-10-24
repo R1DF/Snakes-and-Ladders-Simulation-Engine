@@ -20,9 +20,9 @@ class Location:
     def set_contents(self, location_type, data):
         match location_type:
             case "SNAKE":
-                self.contents = Snake(self.master, data)
+                self.contents = Snake(self, data)
             case "LADDER":
-                self.contents = Ladder(self.master, data)
+                self.contents = Ladder(self, data)
 
     def set_location_string(self):
         # LOGIC ERROR: doesn't work when X is stretched beyond or less than 10

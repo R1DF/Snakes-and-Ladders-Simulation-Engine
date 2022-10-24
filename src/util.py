@@ -21,6 +21,8 @@ def get_coloured_message(message):
         "C#", Fore.CYAN
     ).replace(
         "M#", Fore.MAGENTA
+    ).replace(
+        "W#", Fore.WHITE
     )
 
 

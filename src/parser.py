@@ -28,15 +28,25 @@ class Parser:
                 player.move(roll)
                 return True
 
+            case "PLAYERS":
+                print("Loading map...")
+                data = self.master.field.show_players()
+                for player_name, player_coordinates in data:
+                    location_string_coloured = self.master.field.grid[player_coordinates[1]][player_coordinates[0]].location_string_coloured
+                    print(util.get_coloured_message(f"{player_name} is located at square {location_string_coloured}."))
+                util.break_line()
+
             case "LOCATIONS":
                 print("Loading map...")
-                self.master.field.show_points()
+                self.master.field.show_points(player)
+                print(f"\nYou're at square {int(self.master.field.grid[player.coordinates[1]][player.coordinates[0]].location_string)}.")
                 print("\n# - Ladder\nS - Snake\n* - Redemption Point\n\nColoured number squares are destinations of their corresponding snake/ladder.\n")
 
             case "STATUS":
                 player_position = int(self.master.field.grid[player.coordinates[1]][player.coordinates[0]].location_string)
                 distance = (self.master.pack_data["grid_height"] * 10) - player_position
-                print(f"You are {distance} unit{'s' if distance > 1 else ''} away from the finishing point.\nPosition: {player.get_position()}")
+                print(f"You are {distance} unit{'s' if distance > 1 else ''} away from the finishing point.\nPosition: Square {player_position}, {player.get_position()}")
+                util.break_line()
 
             case "SURRENDER":
                 if questionary.confirm(

@@ -28,6 +28,11 @@ class Parser:
                 player.move(roll)
                 return True
 
+            case "LOCATIONS":
+                print("Loading map...")
+                self.master.field.show_points()
+                print("\n# - Ladder\nS - Snake\n* - Redemption Point\n\nColoured number squares are destinations of their corresponding snake/ladder.\n")
+
             case "STATUS":
                 player_position = int(self.master.field.grid[player.coordinates[1]][player.coordinates[0]].location_string)
                 distance = (self.master.pack_data["grid_height"] * 10) - player_position

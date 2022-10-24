@@ -3,6 +3,7 @@ import os
 import json
 import random
 import util
+import questionary
 from field import Field
 from player import Player
 from parser import Parser
@@ -29,8 +30,9 @@ VERY_NAUGHTY_WORDS = (
 
 # Game class
 class SnakesAndLadders:
-    def __init__(self, pack_file_name, player_names, debug=False):
+    def __init__(self, version, pack_file_name, player_names, debug=False):
         # Initialization and loading
+        util.title(f"Snakes and Ladders Simulation Engine v{version} - Game in session")
         self.pack_file_name = pack_file_name
         self.pack_data = json.load(open(os.getcwd() + "\\packs\\" + self.pack_file_name, "r"))
         self.has_anyone_won = False
@@ -43,16 +45,28 @@ class SnakesAndLadders:
         LADDERTO[XY] - Ladder location that moves the player to the specified spot.
         """
 
+        # Making constant
+        self.players_colours = (
+            "RED",
+            "BLUE",
+            "YELLOW",
+            "GREEN",
+            "CYAN",
+            "MAGENTA"
+        )
+
         # Loading grid
         self.grid_width, self.grid_height = 10, self.pack_data["grid_height"]
         self.string_representative_width = len(str(self.grid_width * self.grid_height))
         self.field = Field(self, self.pack_data)
 
-        # Creating players
+        # Creating players and adding their colours
         player_names_shuffled = player_names.copy()
         random.shuffle(player_names_shuffled)
-        for player_name in player_names_shuffled:
-            self.players.append(Player(self, player_name))
+        for player_index in range(len(player_names_shuffled)):
+            self.players.append(Player(self, player_names_shuffled[player_index]))
+            self.players[player_index].set_colour(self.players_colours[player_index % len(self.players_colours)])
+
 
         # Parser + Game loop
         self.parser = Parser(self)
@@ -101,15 +115,74 @@ class SnakesAndLadders:
 
     def simulate_question(self, player, which_type):
         match which_type:
+            case "LADDER":
+                # Setting up question
+                location_contents = self.field.grid[player.coordinates[1]][player.coordinates[0]].contents
+                question = random.choice(location_contents.data["questions"])
+                correct_answer = question["answers"][0]
+                answers = question["answers"].copy()
+                random.shuffle(answers)
+
+                # Introducing the question
+                util.break_line()
+                print(f"{player.name} reached a ladder.\nAnswer the question below correctly to skip through.\n")
+                prompt = None
+                while prompt is None:
+                    try:
+                        prompt = questionary.select(
+                            question["question"],
+                            choices=answers
+                        ).unsafe_ask()
+                        break
+                    except KeyboardInterrupt:
+                        continue
+
+                # Checking question validity
+                if prompt == correct_answer:
+                    destination = location_contents.destination
+                    destination = self.field.grid[destination[1]][destination[0]].location_number
+                    print(util.get_coloured_message(f"\nG#Correct!~|\nYou are now at square {destination}!"))
+                    return True
+                else:
+                    print(util.get_coloured_message(f"\nR#Incorrect!~|\nToo bad. The correct answer was \"{correct_answer}\"!"))
+                    return False
+
             case "REDEMPTION":
-                question = self.pack_data["redemption_point_questions"]
+                # Setting up question
+                question = random.choice(self.pack_data["locations"]["redemption_points"]["questions"])
+                correct_answer = question["answers"][0]
+                answers = question["answers"].copy()
+                random.shuffle(answers)
+
+                # Introducing the question
+                util.break_line()
+                print(f"{player.name}, congratulations! You reached a Redemption Point!\nAnswer the question below correctly to earn it!\n")
+                prompt = None
+                while prompt is None:
+                    try:
+                        prompt = questionary.select(
+                            question["question"],
+                            choices=answers
+                        ).unsafe_ask()
+                        break
+                    except KeyboardInterrupt:
+                        continue
+
+                # Checking question validity
+                if prompt == correct_answer:
+                    self.field.grid[player.coordinates[1]][player.coordinates[0]].delete_redemption_point()
+                    player.redemption_points += 1
+                    print(util.get_coloured_message(f"\nG#Correct!~|\n{player.display_name} now has {player.redemption_points} Redemption Point{'' if player.redemption_points == 1 else 's'}."))
+                else:
+                    print(util.get_coloured_message(f"\nR#Incorrect!~|\nToo bad. The correct answer was \"{correct_answer}\"!"))
+
 
     def must_inverse(self, row):
         return row % 2 != 0
 
 if __name__ == "__main__":
-    a = SnakesAndLadders("test.json", ["John"])
-    # a.field.show_points()
+    a = SnakesAndLadders("test.json", ["John"], True)
+    a.field.show_points()
     # a = a.field.grid
     # for x in a[::-1]:
     #     print([y.coordinates for y in x])

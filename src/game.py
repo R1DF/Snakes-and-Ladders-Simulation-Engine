@@ -96,11 +96,21 @@ class SnakesAndLadders:
 
                 util.wait()
 
+    def inverse_x_coordinate(self, x):
+        return abs(self.grid_width - 1 - x)  # using Real Coordinate System (grid width begins from 0)
+
     def simulate_question(self, player, which_type):
         match which_type:
             case "REDEMPTION":
                 question = self.pack_data["redemption_point_questions"]
 
+    def must_inverse(self, row):
+        return row % 2 != 0
+
 if __name__ == "__main__":
-    a = SnakesAndLadders("test2.json", ["Albert", "Adam"], True)
-    a = a.field.grid
+    a = SnakesAndLadders("test.json", ["John"])
+    # a.field.show_points()
+    # a = a.field.grid
+    # for x in a[::-1]:
+    #     print([y.coordinates for y in x])
+

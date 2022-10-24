@@ -3,7 +3,7 @@ import questionary
 import json
 import os
 from game import SnakesAndLadders
-from util import clear, break_line, wait, pursue_str_input, pursue_int_input
+from util import clear, break_line, wait, pursue_str_input, pursue_int_input, title
 from get_config import Config
 from packs_viewer import PacksViewer
 from packs_detector import get_zipped
@@ -28,6 +28,7 @@ class Engine:
     def main_menu_loop(self):
         while True:
             # Always clearing
+            title(f"Snakes and Ladders Simuation Engine {self.version}")
             clear()
 
             # Asking for user input
@@ -65,7 +66,7 @@ class Engine:
                                     continue
                                 player_names.append(player_name)
                                 break
-                        self.game = SnakesAndLadders(selected_pack_file_name, player_names)
+                        self.game = SnakesAndLadders(self.version, selected_pack_file_name, player_names)
                         wait()
                 case 1:
                     PacksViewer(self)

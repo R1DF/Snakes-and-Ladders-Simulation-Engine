@@ -199,8 +199,9 @@ class SnakesAndLadders:
         return row % 2 != 0
 
 if __name__ == "__main__":
-    a = SnakesAndLadders("test.json", ["John"], True)
-    a.field.show_points()
+    pass
+    # a = SnakesAndLadders("test.json", ["John"], True)
+    # a.field.show_points()
     # a = a.field.grid
     # for x in a[::-1]:
     #     print([y.coordinates for y in x])

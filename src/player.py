@@ -11,6 +11,7 @@ class Player:
         self.display_name = name[:self.master.string_representative_width].upper()
         self.coordinates = [0, 0]
         self.redemption_points = 0
+        self.has_won = False
 
     def set_colour(self, colour):
         match colour:
@@ -55,7 +56,12 @@ class Player:
 
         # Checking whether the player will go up
         goes_up = x + units >= grid_width if not self.on_inverse_row() else x - units < 0
-        if goes_up and self.coordinates[1] != grid_height - 1:
+        if goes_up:
+            # Checking if the player is on the last row
+            if self.coordinates[1] == grid_height - 1:
+                print(f"... How unlucky, {self.display_name}. You can't go that far!")
+                return
+
             # Cycles - change in Y, Moves - new X but updated depending on row type
             if not self.on_inverse_row():
                 cycles = abs(new_x) // grid_height
@@ -74,6 +80,21 @@ class Player:
 
         # Checking if a special location was reached
         location = self.master.field.grid[self.coordinates[1]][self.coordinates[0]]
+
+        # If the player won...
+        if location.coordinates == [grid_height - 1 if (grid_height - 1) % 2 == 0 else 0, grid_height - 1]:
+            self.has_won = True
+            self.master.winners.append(self.display_name)
+            match len(self.master.winners):
+                case 1:
+                    print(util.get_coloured_message(f"\nG#Congratulations!~|\n{self.display_name} won the game and reacted 1st place!\n"))
+                case 2:
+                    print(util.get_coloured_message(f"\nG#Well done!~|\n{self.display_name} reached 2nd place!\n"))
+                case _:
+                    print(util.get_coloured_message(f"\nG#Not bad!~|\n{self.display_name} reached the end!\n"))
+
+            # No need to check further
+            return
 
         # Checking for location type
         match location.location_type:

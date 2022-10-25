@@ -28,11 +28,11 @@ class Engine:
     def main_menu_loop(self):
         while True:
             # Always clearing
-            title(f"Snakes and Ladders Simuation Engine {self.version}")
+            title(f"Snakes and Ladders Simuation Engine v{self.version}")
             clear()
 
             # Asking for user input
-            print(f"Snakes and Ladders Simulation Engine {self.version}")
+            print(f"Snakes and Ladders Simulation Engine v{self.version}")
             print("What would you like to do?\n")
 
             # Questioning

@@ -35,8 +35,8 @@ class SnakesAndLadders:
         util.title(f"Snakes and Ladders Simulation Engine v{version} - Game in session")
         self.pack_file_name = pack_file_name
         self.pack_data = json.load(open(os.getcwd() + "\\packs\\" + self.pack_file_name, "r"))
-        self.has_anyone_won = False
         self.players = []
+        self.winners = []
         """
         Grid information:
         NONE - The place is empty.
@@ -72,13 +72,30 @@ class SnakesAndLadders:
         self.parser = Parser(self)
 
         if not debug:
-            self.initiate_loop()
+            util.title(f"Snakes and Ladders Simulation Engine v{version} - Game ended")
+            turns = self.initiate_loop()
+
+            # After the game is over
+            util.clear()
+            print(f"Great game. Here's the statistics below:\n\nAmount of turns: {turns}")
+
+            # Getting out the scorings
+            for player_index, player in enumerate(self.winners):
+                print(util.get_coloured_message(f"{player_index + 1}. {player}"))
+
+            util.break_line()
+
 
     def initiate_loop(self):
         counter = 0
-        while not self.has_anyone_won:
+        while not all(x.has_won for x in self.players):
             counter += 1
             for player in self.players:
+                # Always skip players that won
+                if player.has_won:
+                    continue
+
+                # Otherwise
                 util.clear()
                 player_name = player.name
                 has_valid_command = False
@@ -109,6 +126,7 @@ class SnakesAndLadders:
                         has_valid_command = self.parser.parse(command.upper(), player)
 
                 util.wait()
+        return counter
 
     def inverse_x_coordinate(self, x):
         return abs(self.grid_width - 1 - x)  # using Real Coordinate System (grid width begins from 0)

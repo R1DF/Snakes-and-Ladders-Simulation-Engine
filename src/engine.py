@@ -7,6 +7,7 @@ from util import clear, break_line, wait, pursue_str_input, pursue_int_input, ti
 from get_config import Config
 from packs_viewer import PacksViewer
 from packs_detector import get_zipped
+from version_checker import CheckVersion
 
 # Making the app
 class Engine:
@@ -79,7 +80,9 @@ class Engine:
                     wait()
 
                 case 3:
-                    pass
+                    break_line()
+                    CheckVersion().check(self.version)
+                    wait()
 
                 case 4:
                     clear()

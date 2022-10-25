@@ -16,6 +16,8 @@ VALID_COMMANDS = (
     "PLAYERS",
     "LOCATIONS",
     "STATUS",
+    "INSPECT SNAKE",
+    "INSPECT LADDER",
     "SURRENDER"
 )
 

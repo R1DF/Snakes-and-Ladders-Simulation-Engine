@@ -51,7 +51,7 @@ class Engine:
                     selected_pack = questionary.select(
                         "Please select a pack (Ctrl+C to cancel):",
                         choices=packs
-                    ).ask(kbi_msg="")
+                    ).unsafe_ask()
                     selected_pack_file_name = file_names[packs.index(selected_pack)]
                     if selected_pack is not None:
                         print("Fetching player limit...")

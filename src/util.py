@@ -1,5 +1,6 @@
 # Imports
 from colorama import init, Fore, Style
+from readchar import readkey
 import os
 
 # Colorama must do its thing
@@ -56,7 +57,11 @@ def title(program_title):
 
 
 def wait(to_exit=False):
-    input(f"Press Enter to {'exit' if to_exit else 'continue'}.\n")
+    print(f"Press any key to {'exit' if to_exit else 'continue'}.")
+    try:
+        readkey()
+    except KeyboardInterrupt:
+        pass
 
 
 def pursue_str_input(message="", min_range=None, max_range=None):

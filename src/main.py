@@ -4,8 +4,8 @@ try:
     from integrity_check import Check
     from engine import Engine
 
-except ImportError:
-    alert("Error importing game files.\nPlease reinstall the game.\n")
+except ImportError as ie:
+    alert(f"Error importing game files.\nException message: {ie}\nPlease reinstall the game.\n")
     quit()
 
 # CONSTANTS
@@ -37,4 +37,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         clear()
         notify("Game force quitted.")
+        wait(True)
         quit()
+

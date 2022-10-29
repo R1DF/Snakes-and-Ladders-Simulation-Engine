@@ -5,6 +5,7 @@ import os
 from game import SnakesAndLadders
 from util import clear, break_line, wait, pursue_str_input, pursue_int_input, title
 from get_config import Config
+from settings_menu import SettingsMenu
 from packs_viewer import PacksViewer
 from packs_detector import get_zipped
 from version_checker import CheckVersion
@@ -15,7 +16,8 @@ class Engine:
         self.version = version
         self.start_menu_choices = (
             "Play",
-            "View packs",
+            "Packs",
+            "Settings",
             "Credits",
             "Check for updates (internet required)",
             "Quit"
@@ -34,7 +36,7 @@ class Engine:
 
             # Asking for user input
             print(f"Snakes and Ladders Simulation Engine v{self.version}")
-            print("What would you like to do?\n")
+            print("Made by R1DF.\n")
 
             # Questioning
             self.selection = self.start_menu_choices.index(questionary.select(
@@ -73,17 +75,20 @@ class Engine:
                     PacksViewer(self)
 
                 case 2:
+                    SettingsMenu(self)
+
+                case 3:
                     break_line()
                     print("Made by R1DF. (https://github.com/R1DF/)")
                     print("Coded using Python with questionary and colorama.")
                     print("\nSpecial mention to Adam and Aru.")
                     wait()
 
-                case 3:
+                case 4:
                     break_line()
                     CheckVersion().check(self.version)
                     wait()
 
-                case 4:
+                case 5:
                     clear()
                     quit()

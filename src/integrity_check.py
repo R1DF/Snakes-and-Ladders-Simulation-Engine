@@ -1,10 +1,11 @@
 # Imports
 import os
+import toml
 from time import sleep
 from util import cheer, alert
 
 # Constants
-RATE = 0.02
+RATE = toml.load(os.getcwd() + "\\config.toml")["constants"]["RATE"] * (2/5)  # shoutout to my math teacher and proportions
 
 # File integrity checking
 class Check:
@@ -19,6 +20,7 @@ class Check:
             "menu.py",
             "packs_detector.py",
             "packs_viewer.py",
+            "settings_menu.py",
             "field.py",
             "version_checker.py",
             "location.py",

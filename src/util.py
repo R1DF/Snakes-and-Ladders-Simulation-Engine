@@ -115,3 +115,4 @@ def pursue_float_input(message="", min_range=None, max_range=None):
 def pursue_yn_input(message=""):
     choice = questionary.select(message, choices=("Yes", "No")).unsafe_ask()
     return choice == "Yes"
+

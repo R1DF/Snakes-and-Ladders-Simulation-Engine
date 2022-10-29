@@ -65,7 +65,7 @@ class SettingsMenu(BaseMenu):
                     self.has_saved = False
 
                 case 1:
-                    choice = pursue_float_input("Enter amount of milliseconds:")
+                    choice = pursue_float_input("Enter amount of milliseconds", min_range=0.002, max_range=0.9)
                     self.current_data["constants"]["RATE"] = choice / 1000
                     self.has_saved = False
 

@@ -101,7 +101,7 @@ def pursue_float_input(message="", min_range=None, max_range=None):
         if not user_input.isnumeric():
             print("Please enter a number.\n")
             continue
-        user_input = float(user_input)
+        user_input = round(float(user_input), 2)
         if min_range is not None:
             if user_input < min_range:
                 print(f"{min_range} is the lowest you can go.\n")

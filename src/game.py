@@ -13,9 +13,13 @@ VALID_COMMANDS = (
     "HELP",
     "CLEAR",
     "ROLL",
+    "MOVE",
     "PLAYERS",
     "LOCATIONS",
+    "WHERE",
+    "MAP",
     "STATUS",
+    "DISTANCE",
     "INSPECT SNAKE",
     "INSPECT LADDER",
     "SURRENDER"
@@ -39,13 +43,6 @@ class SnakesAndLadders:
         self.pack_data = json.load(open(os.getcwd() + "\\packs\\" + self.pack_file_name, "r"))
         self.players = []
         self.winners = []
-        """
-        Grid information:
-        NONE - The place is empty.
-        REDEMPTION - Redemption point available.
-        SNAKETO[XY] - Snake location that moves the player to the specified spot.
-        LADDERTO[XY] - Ladder location that moves the player to the specified spot.
-        """
 
         # Making constant
         self.players_colours = (
@@ -69,30 +66,46 @@ class SnakesAndLadders:
             self.players.append(Player(self, player_names_shuffled[player_index]))
             self.players[player_index].set_colour(self.players_colours[player_index % len(self.players_colours)])
 
+        # Getting active players
+        self.active_players = self.players.copy()
+        self.surrendered_players = []
 
         # Parser + Game loop
         self.parser = Parser(self)
 
         if not debug:
-            util.title(f"Snakes and Ladders Simulation Engine v{version} - Game ended")
+            util.title(f"Snakes and Ladders Simulation Engine v{version} - Game ongoing")
             turns = self.initiate_loop()
 
             # After the game is over
             util.clear()
+            util.title(f"Snakes and Ladders Simulation Engine v{version} - Game ended")
             print(f"Great game. Here's the statistics below:\n\nAmount of turns: {turns}")
 
-            # Getting out the scorings
-            for player_index, player in enumerate(self.winners):
-                print(util.get_coloured_message(f"{player_index + 1}. {player}"))
+            # Getting out the scorings and finding out who surrendered and who did not
+            if not self.active_players:
+                print("Wow. Everyone surrendered. No-one wins.\n\nPlayers:")
+                for player in self.surrendered_players:
+                    print(util.get_coloured_message(f"{player.display_name}"))
 
+            elif len(self.active_players) == 1:
+                print(util.get_coloured_message(f"The winner is {self.winners[0]}!\nEveryone else surrendered.\n\nSurrendered:"))
+                for player in self.surrendered_players:
+                    print(util.get_coloured_message(f"{player.display_name}"))
+            else:
+                for player_index, player in enumerate(self.winners):
+                    print(util.get_coloured_message(f"{player_index + 1}. {player}"))
+                print("\nSurrendered:")
+                for player in self.surrendered_players:
+                    print(util.get_coloured_message(player.display_name))
             util.break_line()
 
 
     def initiate_loop(self):
         counter = 0
-        while not all(x.has_won for x in self.players):
+        while not all(x.has_won for x in self.active_players):
             counter += 1
-            for player in self.players:
+            for player in self.active_players:
                 # Always skip players that won
                 if player.has_won:
                     continue
@@ -101,7 +114,6 @@ class SnakesAndLadders:
                 util.clear()
                 player_name = player.name
                 has_valid_command = False
-
                 print(util.get_coloured_message(
                     f"M#Turn {counter}~|\nM#Current player: {player_name}~|\nEnter B#HELP~| for a list of commands.")
                 )
@@ -132,6 +144,11 @@ class SnakesAndLadders:
 
     def inverse_x_coordinate(self, x):
         return abs(self.grid_width - 1 - x)  # using Real Coordinate System (grid width begins from 0)
+
+    def get_coordinates_from_square_number(self, number):
+        y = number // self.grid_width
+        x = (number - (self.grid_width * y)) - 1
+        return [x if not self.must_inverse(y) else self.inverse_x_coordinate(x), y]
 
     def simulate_question(self, player, which_type):
         match which_type:

@@ -124,6 +124,9 @@ class Player:
                         print(util.get_coloured_message(f"C#{self.name}~| tried to get a Redemption Point, but was already carrying too many."))
 
 
+    def surrender(self):
+        self.master.active_players.remove(self)
+        self.master.surrendered_players.append(self)
 
     def get_position(self):
         return f"({self.coordinates[0]}, {self.coordinates[1]})"

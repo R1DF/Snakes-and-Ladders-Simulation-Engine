@@ -150,7 +150,6 @@ class SnakesAndLadders:
         x = (number - (self.grid_width * y)) - 1
         if self.must_inverse(y):
             x = self.inverse_x_coordinate(x)
-        print(x, y)
         return [x, y]
 
     def simulate_question(self, player, which_type):

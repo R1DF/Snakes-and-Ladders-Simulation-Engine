@@ -50,6 +50,11 @@ class Engine:
                     break_line()
                     file_names = [x["file_name"] for x in get_zipped()]
                     packs = [x["name"] for x in get_zipped()]
+                    if len(packs) == 0:
+                        print("You have no packs installed.\nPlease install a pack.\n")
+                        wait()
+                        continue
+
                     selected_pack = questionary.select(
                         "Please select a pack (Ctrl+C to cancel):",
                         choices=packs

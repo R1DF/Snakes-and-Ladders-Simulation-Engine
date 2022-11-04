@@ -82,7 +82,7 @@ class Engine:
                     print("Made by R1DF. (https://github.com/R1DF/)\n"
                           "Coded using Python, questionary, colorama, and JSON.\n\n"
                           "Thanks to anon for testing the program out before its release!\n"
-                          "Special mention goes to Adam and Aru.")
+                          "Special mentions go to Adam and Aru.")
                     wait()
 
                 case 4:

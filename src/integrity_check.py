@@ -33,7 +33,7 @@ class Check:
 
     def check_file_integrity(self):
         print("Checking file integrity...")
-        sleep(RATE + 0.3)
+        sleep(RATE)
         for path in self.paths:
             print(f"{path}... ", end="")
             sleep(RATE)

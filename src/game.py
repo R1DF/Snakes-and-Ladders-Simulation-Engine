@@ -146,9 +146,12 @@ class SnakesAndLadders:
         return abs(self.grid_width - 1 - x)  # using Real Coordinate System (grid width begins from 0)
 
     def get_coordinates_from_square_number(self, number):
-        y = number // self.grid_width
+        y = (number - 1) // self.grid_width
         x = (number - (self.grid_width * y)) - 1
-        return [x if not self.must_inverse(y) else self.inverse_x_coordinate(x), y]
+        if self.must_inverse(y):
+            x = self.inverse_x_coordinate(x)
+        print(x, y)
+        return [x, y]
 
     def simulate_question(self, player, which_type):
         match which_type:

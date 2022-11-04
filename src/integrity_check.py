@@ -11,7 +11,7 @@ RATE = toml.load(os.getcwd() + "\\config.toml")["constants"]["RATE"] * (2/5)  # 
 class Check:
     def __init__(self):
         self.paths = [
-            "util.py"
+            "util.py",
             "engine.py",
             "game.py",
             "config.toml",

@@ -51,6 +51,7 @@ if __name__ == "__main__":
         clear()
     except KeyboardInterrupt:
         clear()
+        title("Force quit detected")
         notify("Game force quitted.")
         wait(True)
         quit()

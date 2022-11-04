@@ -79,9 +79,10 @@ class Engine:
 
                 case 3:
                     break_line()
-                    print("Made by R1DF. (https://github.com/R1DF/)")
-                    print("Coded using Python with questionary and colorama.")
-                    print("\nSpecial mention to Adam and Aru.")
+                    print("Made by R1DF. (https://github.com/R1DF/)\n"
+                          "Coded using Python, questionary, colorama, and JSON.\n\n"
+                          "Thanks to anon for testing the program out before its release!\n"
+                          "Special mention goes to Adam and Aru.")
                     wait()
 
                 case 4:
